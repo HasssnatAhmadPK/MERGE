@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>title</title>
+  </head>
+  <body>
+  <h2>A simple program that takes a list of intervals and, in turn, returns a list of intervals(all overlapping intervals are merged).</h2>
+  <p >Example Intervel: [25,30] ,[2,19] ,[14, 23] ,[4,8]</p>
+  <p >Epected Outout: [2,23],[25,30]</p>
+  <br>
+  <br>
+<h2>For changing any input Please refer to Index.html line#12, you can enter your custom input for testing</h2>
+<p >Input: <span id="inputInterval">---</span></p>
+<p >Output: <span id="outputInterval">---</span></p>
+
+
+<script>
+var numbers = [[25,30] ,[2,19] ,[14, 23] ,[4,8]];
+document.getElementById("inputInterval").innerHTML = JSON.stringify(numbers);
+ function CompareArrayItemsForSorting(a, b) {
+    var len = a.length > b.length ? b.length : a.length;    
+    for(var i=0; i<len; ++i) {
+        if(a[i] - b[i] !== 0)
+            return a[i] - b[i];
+    }    
+    return (a.length - b.length);
+}
+
+var mergeOverlappingIntervals = function(inputIntervals) {
+    // sskip execution if array have insufficent items
+    if(inputIntervals.length < 1){
+        document.getElementById("outputInterval").innerHTML = 'Please Enter valid intervals';
+        return;
+    }
+    // sort the array befor procedding
+    var sortedIntervalList = inputIntervals.sort(CompareArrayItemsForSorting);
+    var i = 0;
+    while(i < sortedIntervalList.length - 1) {
+        var current = sortedIntervalList[i],
+            next = sortedIntervalList[i+1];
+                if(current[1] >= next[0]) {
+            current[1] = Math.max(current[1], next[1]);
+            sortedIntervalList.splice(i+1, 1);
+        } else {
+            i++;
+        }
+    }
+    return sortedIntervalList;
+};
+
+var mergedNumbers = mergeOverlappingIntervals(numbers);
+document.getElementById("outputInterval").innerHTML = JSON.stringify(mergedNumbers);
+//document.write('<pre>' + JSON.stringify(mergedNumbers) + '</pre>');
+</script>
+  </body>
+</html>
